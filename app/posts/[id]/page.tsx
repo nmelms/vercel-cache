@@ -7,8 +7,6 @@ type Post = {
   userId: number;
 };
 
-export const revalidate = 60;
-
 async function getPost(id: string): Promise<Post> {
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
     next: { tags: [`post-${id}`] },
@@ -45,7 +43,7 @@ export default async function PostPage({
       <h1 className="text-3xl font-bold capitalize mt-1 mb-6">{post.title}</h1>
       <p className="text-zinc-600 leading-relaxed">{post.body}</p>
       <p className="mt-8 text-xs text-zinc-400">
-        ISR — revalidates every 60 seconds
+        ISR — tag-based revalidation
       </p>
     </main>
   );
