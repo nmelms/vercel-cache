@@ -1,4 +1,5 @@
 import Link from "next/link";
+import RevalidateButtons from "./components/RevalidateButtons";
 
 type Post = {
   id: number;
@@ -10,7 +11,9 @@ type Post = {
 export const revalidate = 60;
 
 async function getPosts(): Promise<Post[]> {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    next: { tags: ["posts"] },
+  });
   if (!res.ok) throw new Error("Failed to fetch posts");
   return res.json();
 }
@@ -24,6 +27,7 @@ export default async function Home() {
       <p className="text-sm text-zinc-500 mb-8">
         ISR — revalidates every 60 seconds
       </p>
+      <RevalidateButtons />
       <ul className="space-y-4">
         {posts.map((post) => (
           <li key={post.id}>

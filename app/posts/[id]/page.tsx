@@ -10,13 +10,17 @@ type Post = {
 export const revalidate = 60;
 
 async function getPost(id: string): Promise<Post> {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+    next: { tags: [`post-${id}`] },
+  });
   if (!res.ok) throw new Error("Failed to fetch post");
   return res.json();
 }
 
 export async function generateStaticParams() {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    next: { tags: ["posts"] },
+  });
   const posts: Post[] = await res.json();
   return posts.map((post) => ({ id: String(post.id) }));
 }
